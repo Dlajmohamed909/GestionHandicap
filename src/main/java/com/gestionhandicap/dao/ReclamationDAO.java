@@ -17,14 +17,16 @@ public class ReclamationDAO {
 
     public void ajouterReclamation(Reclamation r) {
 
-        String sql = "INSERT INTO reclamation(sujet,message) VALUES (?,?)";
+        String sql = "INSERT INTO reclamation(description, statut, id_personne, id_admin) VALUES (?,?,?,?)";
 
         try {
 
             PreparedStatement stmt = connection.prepareStatement(sql);
 
-            stmt.setString(1, r.getSujet());
-            stmt.setString(2, r.getMessage());
+            stmt.setString(1, r.getDescription());
+            stmt.setString(2, r.getStatut());
+            stmt.setInt(3, r.getIdPersonne());
+            stmt.setInt(4, r.getIdAdmin());
 
             stmt.executeUpdate();
 
@@ -50,9 +52,13 @@ public class ReclamationDAO {
 
                 Reclamation r = new Reclamation();
 
-                r.setId(rs.getInt("id"));
-                r.setSujet(rs.getString("sujet"));
-                r.setMessage(rs.getString("message"));
+                r.setIdReclamation(rs.getInt("id_reclamation"));
+                r.setDescription(rs.getString("description"));
+                r.setStatut(rs.getString("statut"));
+                r.setIdPersonne(rs.getInt("id_personne"));
+                r.setIdAdmin(rs.getInt("id_admin"));
+                r.setDateReclamation(rs.getTimestamp("date_reclamation") != null
+                        ? rs.getTimestamp("date_reclamation").toLocalDateTime() : null);
 
                 liste.add(r);
             }
@@ -62,5 +68,52 @@ public class ReclamationDAO {
         }
 
         return liste;
+    }
+
+    public List<Reclamation> getReclamationsByPersonne(int idPersonne) {
+        List<Reclamation> liste = new ArrayList<>();
+        String sql = "SELECT * FROM reclamation WHERE id_personne = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, idPersonne);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Reclamation r = new Reclamation();
+                r.setIdReclamation(rs.getInt("id_reclamation"));
+                r.setDescription(rs.getString("description"));
+                r.setStatut(rs.getString("statut"));
+                r.setIdPersonne(rs.getInt("id_personne"));
+                r.setIdAdmin(rs.getInt("id_admin"));
+                r.setDateReclamation(rs.getTimestamp("date_reclamation") != null
+                        ? rs.getTimestamp("date_reclamation").toLocalDateTime() : null);
+                liste.add(r);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return liste;
+    }
+
+    public void updateStatut(int idReclamation, String statut) {
+        String sql = "UPDATE reclamation SET statut = ? WHERE id_reclamation = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, statut);
+            stmt.setInt(2, idReclamation);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void supprimerReclamation(int idReclamation) {
+        String sql = "DELETE FROM reclamation WHERE id_reclamation = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, idReclamation);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

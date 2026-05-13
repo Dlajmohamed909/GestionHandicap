@@ -46,7 +46,4 @@ public class Demande {
     public String toString() {
         return "Demande{" + "id=" + idDemande + ", type='" + type + "', statut='" + statut + "', date=" + dateDemande + "}";
     }
-
-    public void setId(int id) {
-    }
 }

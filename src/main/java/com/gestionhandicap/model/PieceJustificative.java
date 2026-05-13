@@ -42,8 +42,4 @@ public class PieceJustificative {
     public String toString() {
         return "PieceJustificative{" + "id=" + idPiece + ", fichier='" + nomFichier + "', demande=" + idDemande + "}";
     }
-
-    public String getChemin() {
-        return "";
-    }
 }

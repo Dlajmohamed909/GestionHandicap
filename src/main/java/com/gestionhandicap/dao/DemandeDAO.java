@@ -17,7 +17,7 @@ public class DemandeDAO {
 
     public void ajouterDemande(Demande d) {
 
-        String sql = "INSERT INTO demande(type,description) VALUES (?,?)";
+        String sql = "INSERT INTO demande(type, description, statut, id_personne, id_admin) VALUES (?,?,?,?,?)";
 
         try {
 
@@ -25,6 +25,9 @@ public class DemandeDAO {
 
             stmt.setString(1, d.getType());
             stmt.setString(2, d.getDescription());
+            stmt.setString(3, d.getStatut());
+            stmt.setInt(4, d.getIdPersonne());
+            stmt.setInt(5, d.getIdAdmin());
 
             stmt.executeUpdate();
 
@@ -50,9 +53,14 @@ public class DemandeDAO {
 
                 Demande d = new Demande();
 
-                d.setId(rs.getInt("id"));
+                d.setIdDemande(rs.getInt("id_demande"));
                 d.setType(rs.getString("type"));
                 d.setDescription(rs.getString("description"));
+                d.setStatut(rs.getString("statut"));
+                d.setIdPersonne(rs.getInt("id_personne"));
+                d.setIdAdmin(rs.getInt("id_admin"));
+                d.setDateDemande(rs.getTimestamp("date_demande") != null
+                        ? rs.getTimestamp("date_demande").toLocalDateTime() : null);
 
                 liste.add(d);
             }
@@ -62,5 +70,53 @@ public class DemandeDAO {
         }
 
         return liste;
+    }
+
+    public List<Demande> getDemandesByPersonne(int idPersonne) {
+        List<Demande> liste = new ArrayList<>();
+        String sql = "SELECT * FROM demande WHERE id_personne = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, idPersonne);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Demande d = new Demande();
+                d.setIdDemande(rs.getInt("id_demande"));
+                d.setType(rs.getString("type"));
+                d.setDescription(rs.getString("description"));
+                d.setStatut(rs.getString("statut"));
+                d.setIdPersonne(rs.getInt("id_personne"));
+                d.setIdAdmin(rs.getInt("id_admin"));
+                d.setDateDemande(rs.getTimestamp("date_demande") != null
+                        ? rs.getTimestamp("date_demande").toLocalDateTime() : null);
+                liste.add(d);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return liste;
+    }
+
+    public void updateStatut(int idDemande, String statut) {
+        String sql = "UPDATE demande SET statut = ? WHERE id_demande = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, statut);
+            stmt.setInt(2, idDemande);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void supprimerDemande(int idDemande) {
+        String sql = "DELETE FROM demande WHERE id_demande = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, idDemande);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
