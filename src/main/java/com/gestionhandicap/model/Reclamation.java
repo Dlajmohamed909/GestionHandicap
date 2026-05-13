@@ -42,4 +42,21 @@ public class Reclamation {
     public String toString() {
         return "Reclamation{" + "id=" + idReclamation + ", statut='" + statut + "', date=" + dateReclamation + "}";
     }
+
+    public String getSujet() {
+        return "";
+    }
+
+    public String getMessage() {
+        return "";
+    }
+
+    public void setId(int id) {
+    }
+
+    public void setSujet(String sujet) {
+    }
+
+    public void setMessage(String message) {
+    }
 }

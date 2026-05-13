@@ -15,7 +15,6 @@ public class UtilisateurDAO {
         connection = DatabaseConnection.getConnection();
     }
 
-    // Ajouter
     public void ajouterUtilisateur(Utilisateur u) {
 
         String sql = "INSERT INTO utilisateur(nom,email,password) VALUES (?,?,?)";
@@ -37,7 +36,6 @@ public class UtilisateurDAO {
         }
     }
 
-    // Afficher
     public List<Utilisateur> getAllUtilisateurs() {
 
         List<Utilisateur> liste = new ArrayList<>();
@@ -66,23 +64,5 @@ public class UtilisateurDAO {
         }
 
         return liste;
-    }
-
-    // Supprimer
-    public void supprimerUtilisateur(int id) {
-
-        String sql = "DELETE FROM utilisateur WHERE id=?";
-
-        try {
-
-            PreparedStatement stmt = connection.prepareStatement(sql);
-
-            stmt.setInt(1, id);
-
-            stmt.executeUpdate();
-
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
     }
 }

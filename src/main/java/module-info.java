@@ -1,6 +1,7 @@
 module com.example.gestionhandicap {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.sql;
 
 
     opens com.gestionhandicap to javafx.fxml;

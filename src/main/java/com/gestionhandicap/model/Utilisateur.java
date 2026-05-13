@@ -49,4 +49,11 @@ public class Utilisateur {
     public String toString() {
         return "Utilisateur{" + "id=" + id + ", email='" + email + "', nom='" + getNomComplet() + "', role='" + role + "'}";
     }
+
+    public String getPassword() {
+        return "";
+    }
+
+    public void setPassword(String password) {
+    }
 }
