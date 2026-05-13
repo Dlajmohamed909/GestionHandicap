@@ -1,0 +1,125 @@
+/* ─── Root ─────────────────────────────────────────────────────────────────── */
+.root {
+    -fx-font-family: 'Segoe UI', Arial, sans-serif;
+    -fx-background-color: #F0F4F8;
+}
+
+/* ─── Left branding panel ───────────────────────────────────────────────────── */
+.left-panel {
+    -fx-background-color: linear-gradient(to bottom, #1565C0, #0D47A1);
+}
+
+.brand-icon {
+    -fx-font-size: 68px;
+    -fx-text-fill: rgba(255, 255, 255, 0.92);
+}
+
+.brand-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 4, 0, 0, 1);
+}
+
+.brand-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: rgba(255, 255, 255, 0.75);
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+    -fx-line-spacing: 3;
+}
+
+.brand-divider {
+    -fx-background-color: rgba(255, 255, 255, 0.25);
+    -fx-pref-height: 1;
+    -fx-max-width: 64;
+    -fx-pref-width: 64;
+}
+
+.brand-footer {
+    -fx-font-size: 11px;
+    -fx-text-fill: rgba(255, 255, 255, 0.5);
+}
+
+/* ─── Right form panel ──────────────────────────────────────────────────────── */
+.right-panel {
+    -fx-background-color: white;
+}
+
+/* ─── Form card ─────────────────────────────────────────────────────────────── */
+.form-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0D47A1;
+}
+
+.form-hint {
+    -fx-font-size: 13px;
+    -fx-text-fill: #90A4AE;
+}
+
+.field-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #546E7A;
+    -fx-padding: 0 0 2 0;
+}
+
+/* ─── Text fields ───────────────────────────────────────────────────────────── */
+.custom-field {
+    -fx-background-color: #F5F7FA;
+    -fx-background-radius: 8;
+    -fx-border-color: #CFD8DC;
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
+    -fx-padding: 10 14 10 14;
+    -fx-font-size: 14px;
+    -fx-pref-height: 44px;
+    -fx-text-fill: #212121;
+    -fx-prompt-text-fill: #B0BEC5;
+}
+
+.custom-field:focused {
+    -fx-border-color: #1976D2;
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(25, 118, 210, 0.18), 10, 0, 0, 0);
+}
+
+/* ─── Login button ──────────────────────────────────────────────────────────── */
+.login-btn {
+    -fx-background-color: #1976D2;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-pref-height: 46px;
+    -fx-cursor: hand;
+    -fx-letter-spacing: 0.5;
+}
+
+.login-btn:hover {
+    -fx-background-color: #1565C0;
+    -fx-effect: dropshadow(gaussian, rgba(21, 101, 192, 0.45), 14, 0, 0, 4);
+}
+
+.login-btn:pressed {
+    -fx-background-color: #0D47A1;
+    -fx-effect: none;
+    -fx-scale-y: 0.98;
+}
+
+/* ─── Error label ───────────────────────────────────────────────────────────── */
+.error-box {
+    -fx-background-color: #FFEBEE;
+    -fx-background-radius: 6;
+    -fx-border-color: #EF9A9A;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+    -fx-padding: 8 12 8 12;
+}
+
+.error-text {
+    -fx-text-fill: #C62828;
+    -fx-font-size: 13px;
+    -fx-wrap-text: true;
+}

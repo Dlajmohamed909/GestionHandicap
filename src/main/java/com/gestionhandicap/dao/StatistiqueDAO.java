@@ -5,7 +5,7 @@ import com.gestionhandicap.util.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-
+import java.sql.PreparedStatement;
 public class StatistiqueDAO {
 
     private Connection connection;
