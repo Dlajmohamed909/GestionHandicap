@@ -1,0 +1,123 @@
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: white;
+}
+
+.sidebar {
+    -fx-background-color: linear-gradient(to bottom, #1565C0, #0D47A1);
+}
+
+.sidebar-icon {
+    -fx-text-fill: white;
+    -fx-font-size: 54px;
+    -fx-font-weight: bold;
+}
+
+.sidebar-title {
+    -fx-text-fill: white;
+    -fx-font-size: 25px;
+    -fx-font-weight: bold;
+}
+
+.sidebar-text {
+    -fx-text-fill: #d7e6f7;
+    -fx-font-size: 13px;
+    -fx-text-alignment: center;
+    -fx-padding: 10 0 25 0;
+}
+
+.menu-button {
+    -fx-background-color: #1976D2;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 13 18;
+    -fx-cursor: hand;
+}
+
+.menu-button:hover {
+    -fx-background-color: #2196F3;
+}
+
+.page {
+    -fx-background-color: white;
+}
+
+.page-title {
+    -fx-text-fill: #0D47A1;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+
+.page-subtitle {
+    -fx-text-fill: #8a9ba8;
+    -fx-font-size: 15px;
+}
+
+.card {
+    -fx-background-color: #F3F6FA;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-padding: 25;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0, 0, 3);
+}
+
+.card-number {
+    -fx-text-fill: #1976D2;
+    -fx-font-size: 38px;
+    -fx-font-weight: bold;
+}
+
+.card-text {
+    -fx-text-fill: #34495E;
+    -fx-font-size: 15px;
+}
+
+.form-box {
+    -fx-background-color: #F8FAFC;
+    -fx-background-radius: 14;
+    -fx-padding: 25;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 10, 0, 0, 2);
+}
+
+.field-label {
+    -fx-text-fill: #455A64;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.text-field, .text-area, .combo-box {
+    -fx-background-color: white;
+    -fx-border-color: #CFD8DC;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 8;
+    -fx-font-size: 14px;
+}
+
+.text-field:focused, .text-area:focused, .combo-box:focused {
+    -fx-border-color: #1976D2;
+}
+
+.primary-button {
+    -fx-background-color: #1976D2;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 11 22;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: #1565C0;
+}
+
+.secondary-button {
+    -fx-background-color: #E3F2FD;
+    -fx-text-fill: #1565C0;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 10 16;
+    -fx-cursor: hand;
+}
