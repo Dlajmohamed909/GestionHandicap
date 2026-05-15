@@ -6,6 +6,8 @@ import com.gestionhandicap.model.PersonneHandicap;
 import com.gestionhandicap.model.Utilisateur;
 import com.gestionhandicap.util.Session;
 
+import java.util.List;
+
 public class AuthController {
 
     private final UtilisateurDAO utilisateurDAO;
@@ -50,5 +52,29 @@ public class AuthController {
     public boolean isHandicap() {
         Utilisateur u = Session.getUtilisateur();
         return u != null && "HANDICAP".equals(u.getRole());
+    }
+
+    public Utilisateur getByEmail(String email) {
+        return utilisateurDAO.getByEmail(email);
+    }
+
+    /** Updates the user's profile and refreshes the Session if it's the logged-in user. */
+    public void modifierProfil(int id, String nom, String prenom, String email, String motDePasse) {
+        utilisateurDAO.modifierUtilisateur(id, nom, prenom, email, motDePasse);
+        Utilisateur current = Session.getUtilisateur();
+        if (current != null && current.getId() == id) {
+            current.setNom(nom);
+            current.setPrenom(prenom);
+            current.setEmail(email);
+            current.setMotDePasse(motDePasse);
+        }
+    }
+
+    public List<Utilisateur> getAllUtilisateurs() {
+        return utilisateurDAO.getAllUtilisateurs();
+    }
+
+    public void supprimerUtilisateur(int id) {
+        utilisateurDAO.supprimerUtilisateur(id);
     }
 }

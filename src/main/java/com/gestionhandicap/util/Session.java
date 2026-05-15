@@ -14,6 +14,10 @@ public class Session {
         return utilisateurConnecte;
     }
 
+    public static boolean isAdmin() {
+        return utilisateurConnecte != null && "ADMIN".equals(utilisateurConnecte.getRole());
+    }
+
     public static void logout() {
         utilisateurConnecte = null;
     }

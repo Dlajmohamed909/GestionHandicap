@@ -72,6 +72,47 @@ public class UtilisateurDAO {
         return liste;
     }
 
+    public Utilisateur getByEmail(String email) {
+        String sql = "SELECT * FROM utilisateur WHERE email = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Utilisateur u = new Utilisateur();
+                u.setId(rs.getInt("id"));
+                u.setNom(rs.getString("nom"));
+                u.setPrenom(rs.getString("prenom"));
+                u.setEmail(rs.getString("email"));
+                u.setMotDePasse(rs.getString("mot_de_passe"));
+                u.setRole(rs.getString("role"));
+                u.setDateCreation(rs.getTimestamp("date_creation") != null
+                        ? rs.getTimestamp("date_creation").toLocalDateTime() : null);
+                return u;
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return null;
+    }
+
+    public void modifierUtilisateur(int id, String nom, String prenom, String email, String motDePasse) {
+        String sql = "UPDATE utilisateur SET nom=?, prenom=?, email=?, mot_de_passe=? WHERE id=?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, nom);
+            stmt.setString(2, prenom);
+            stmt.setString(3, email);
+            stmt.setString(4, motDePasse);
+            stmt.setInt(5, id);
+            stmt.executeUpdate();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public void supprimerUtilisateur(int id) {
+        String sql = "DELETE FROM utilisateur WHERE id=?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
     public Utilisateur authentifier(String email, String motDePasse) {
         String sql = "SELECT * FROM utilisateur WHERE email = ? AND mot_de_passe = ?";
         try {

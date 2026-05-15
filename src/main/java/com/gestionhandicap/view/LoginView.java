@@ -3,12 +3,14 @@ package com.gestionhandicap.view;
 import com.gestionhandicap.controller.AuthController;
 import com.gestionhandicap.model.Utilisateur;
 import com.gestionhandicap.util.Session;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class LoginView {
@@ -41,7 +43,7 @@ public class LoginView {
         panel.setAlignment(Pos.CENTER);
         panel.setPadding(new Insets(60, 36, 60, 36));
 
-        Label icon = new Label("♿"); // wheelchair accessibility symbol
+        Label icon = new Label("♿");
         icon.getStyleClass().add("brand-icon");
 
         Label title = new Label("GestionHandicap");
@@ -82,7 +84,6 @@ public class LoginView {
         VBox form = new VBox();
         form.setSpacing(0);
 
-        // — Header —
         Label formTitle = new Label("Connexion");
         formTitle.getStyleClass().add("form-title");
 
@@ -91,7 +92,6 @@ public class LoginView {
         formHint.setWrapText(true);
         VBox.setMargin(formHint, new Insets(6, 0, 28, 0));
 
-        // — Email field —
         Label emailLabel = new Label("ADRESSE E-MAIL");
         emailLabel.getStyleClass().add("field-label");
         VBox.setMargin(emailLabel, new Insets(0, 0, 6, 0));
@@ -102,7 +102,6 @@ public class LoginView {
         emailField.setMaxWidth(Double.MAX_VALUE);
         VBox.setMargin(emailField, new Insets(0, 0, 18, 0));
 
-        // — Password field —
         Label passwordLabel = new Label("MOT DE PASSE");
         passwordLabel.getStyleClass().add("field-label");
         VBox.setMargin(passwordLabel, new Insets(0, 0, 6, 0));
@@ -111,9 +110,15 @@ public class LoginView {
         passwordField.setPromptText("••••••••");
         passwordField.getStyleClass().add("custom-field");
         passwordField.setMaxWidth(Double.MAX_VALUE);
-        VBox.setMargin(passwordField, new Insets(0, 0, 10, 0));
+        VBox.setMargin(passwordField, new Insets(0, 0, 4, 0));
 
-        // — Error box —
+        Hyperlink forgotLink = new Hyperlink("Mot de passe oublié ?");
+        forgotLink.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 12; -fx-text-fill: #1976D2; -fx-padding: 0;");
+        forgotLink.setOnAction(e -> openForgotPassword(stage));
+        HBox forgotRow = new HBox(forgotLink);
+        forgotRow.setAlignment(Pos.CENTER_RIGHT);
+        VBox.setMargin(forgotRow, new Insets(0, 0, 10, 0));
+
         VBox errorBox = new VBox();
         errorBox.getStyleClass().add("error-box");
         Label errorText = new Label();
@@ -125,7 +130,6 @@ public class LoginView {
         errorBox.setManaged(false);
         VBox.setMargin(errorBox, new Insets(0, 0, 14, 0));
 
-        // — Login button —
         Button loginBtn = new Button("Se connecter");
         loginBtn.getStyleClass().add("login-btn");
         loginBtn.setMaxWidth(Double.MAX_VALUE);
@@ -140,14 +144,77 @@ public class LoginView {
         emailField.setOnAction(e -> passwordField.requestFocus());
         passwordField.setOnAction(e -> loginBtn.fire());
 
+        Hyperlink registerLink = new Hyperlink("Pas encore de compte ? S'inscrire");
+        registerLink.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 12; -fx-text-fill: #1976D2;");
+        registerLink.setOnAction(e -> openInscription(stage));
+        HBox registerRow = new HBox(registerLink);
+        registerRow.setAlignment(Pos.CENTER);
+        VBox.setMargin(registerRow, new Insets(12, 0, 0, 0));
+
         form.getChildren().addAll(
                 formTitle, formHint,
                 emailLabel, emailField,
                 passwordLabel, passwordField,
+                forgotRow,
                 errorBox,
-                loginBtn
+                loginBtn,
+                registerRow
         );
         return form;
+    }
+
+    private void openForgotPassword(Stage owner) {
+        Dialog<ButtonType> dlg = new Dialog<>();
+        dlg.setTitle("Récupération du mot de passe");
+        dlg.initOwner(owner);
+        dlg.getDialogPane().setPrefWidth(380);
+
+        Label hint = new Label("Saisissez votre adresse e-mail pour retrouver votre mot de passe.");
+        hint.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 12; -fx-text-fill: #5A6578;");
+        hint.setWrapText(true);
+
+        TextField emailField = new TextField();
+        emailField.setPromptText("exemple@uir.ac.ma");
+        emailField.setMaxWidth(Double.MAX_VALUE);
+
+        Label resultLabel = new Label();
+        resultLabel.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 12;");
+        resultLabel.setWrapText(true);
+        resultLabel.setVisible(false);
+        resultLabel.setManaged(false);
+
+        Button rechercherBtn = new Button("Rechercher");
+        rechercherBtn.setStyle(Theme.BTN_PRIMARY);
+        rechercherBtn.setOnAction(e -> {
+            String email = emailField.getText().trim();
+            if (email.isEmpty()) return;
+            Utilisateur u = authController.getByEmail(email);
+            if (u == null) {
+                resultLabel.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 12; -fx-text-fill: #C62828;");
+                resultLabel.setText("Aucun compte trouvé pour cette adresse.");
+            } else {
+                resultLabel.setStyle("-fx-font-family: 'Segoe UI'; -fx-font-size: 12; -fx-text-fill: #388E3C;");
+                resultLabel.setText("Votre mot de passe est : " + u.getMotDePasse());
+            }
+            resultLabel.setVisible(true);
+            resultLabel.setManaged(true);
+        });
+
+        VBox content = new VBox(12, hint, emailField, rechercherBtn, resultLabel);
+        content.setPadding(new Insets(16, 20, 4, 20));
+        dlg.getDialogPane().setContent(content);
+        dlg.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+        dlg.showAndWait();
+    }
+
+    private void openInscription(Stage owner) {
+        Stage inscriptionStage = new Stage();
+        inscriptionStage.initOwner(owner);
+        inscriptionStage.initModality(Modality.APPLICATION_MODAL);
+        inscriptionStage.setTitle("Créer un compte — GestionHandicap");
+        inscriptionStage.setResizable(false);
+        inscriptionStage.setScene(new InscriptionView().createScene(inscriptionStage));
+        inscriptionStage.showAndWait();
     }
 
     private void handleLogin(String email, String password,
@@ -179,13 +246,21 @@ public class LoginView {
     }
 
     private void navigateAfterLogin(Utilisateur user, Stage stage) {
-        // TODO: replace with AdminDashboardView or HandicapDashboardView once implemented
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Connexion réussie");
-        alert.setHeaderText("Bienvenue, " + user.getNomComplet() + " !");
-        alert.setContentText("Rôle : " + user.getRole()
-                + "\nRedirection vers le tableau de bord…");
-        alert.initOwner(stage);
-        alert.showAndWait();
+        try {
+            MainView mainView = new MainView();
+            stage.setScene(mainView.createScene(stage));
+            stage.setTitle("GestionHandicap — " + user.getNomComplet());
+            stage.setMinWidth(860);
+            stage.setMinHeight(560);
+            Platform.runLater(() -> stage.setMaximized(true));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Alert err = new Alert(Alert.AlertType.ERROR);
+            err.setTitle("Erreur de chargement");
+            err.setHeaderText("Impossible d'ouvrir l'interface principale.");
+            err.setContentText(ex.getClass().getSimpleName() + ": " + ex.getMessage());
+            err.initOwner(stage);
+            err.showAndWait();
+        }
     }
 }

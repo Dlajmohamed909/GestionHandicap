@@ -15,27 +15,25 @@ public class DemandeDAO {
         connection = DatabaseConnection.getConnection();
     }
 
-    public void ajouterDemande(Demande d) {
-
+    public int ajouterDemande(Demande d) {
         String sql = "INSERT INTO demande(type, description, statut, id_personne, id_admin) VALUES (?,?,?,?,?)";
-
-        try {
-
-            PreparedStatement stmt = connection.prepareStatement(sql);
-
+        try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, d.getType());
             stmt.setString(2, d.getDescription());
             stmt.setString(3, d.getStatut());
             stmt.setInt(4, d.getIdPersonne());
-            stmt.setInt(5, d.getIdAdmin());
-
+            if (d.getIdAdmin() == 0) {
+                stmt.setNull(5, java.sql.Types.INTEGER);
+            } else {
+                stmt.setInt(5, d.getIdAdmin());
+            }
             stmt.executeUpdate();
-
-            System.out.println("Demande ajoutée");
-
-        } catch(Exception e) {
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) return rs.getInt(1);
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        return -1;
     }
 
     public List<Demande> getAllDemandes() {
@@ -95,6 +93,18 @@ public class DemandeDAO {
             e.printStackTrace();
         }
         return liste;
+    }
+
+    public void modifierDemande(int idDemande, String type, String description) {
+        String sql = "UPDATE demande SET type = ?, description = ? WHERE id_demande = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, type);
+            stmt.setString(2, description);
+            stmt.setInt(3, idDemande);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateStatut(int idDemande, String statut) {

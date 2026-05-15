@@ -18,10 +18,10 @@ public class DemandeController {
         this.pieceDAO = new PieceJustificativeDAO();
     }
 
-    public void soumettreDemande(Demande demande) {
-        demande.setStatut("EN_ATTENTE");
+    public int soumettreDemande(Demande demande) {
+        demande.setStatut("EN_COURS");
         demande.setIdPersonne(Session.getUtilisateur().getId());
-        demandeDAO.ajouterDemande(demande);
+        return demandeDAO.ajouterDemande(demande);
     }
 
     public List<Demande> getAllDemandes() {
@@ -37,12 +37,20 @@ public class DemandeController {
         return demandeDAO.getDemandesByPersonne(idPersonne);
     }
 
+    public void modifierDemande(int idDemande, String type, String description) {
+        demandeDAO.modifierDemande(idDemande, type, description);
+    }
+
+    public void mettreAJourStatut(int idDemande, String statut) {
+        demandeDAO.updateStatut(idDemande, statut);
+    }
+
     public void validerDemande(int idDemande) {
-        demandeDAO.updateStatut(idDemande, "VALIDEE");
+        demandeDAO.updateStatut(idDemande, "ACCEPTEE");
     }
 
     public void rejeterDemande(int idDemande) {
-        demandeDAO.updateStatut(idDemande, "REJETEE");
+        demandeDAO.updateStatut(idDemande, "REFUSEE");
     }
 
     public void archiverDemande(int idDemande) {

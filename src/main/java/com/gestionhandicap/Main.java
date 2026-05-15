@@ -11,7 +11,10 @@ public class Main extends Application {
         LoginView loginView = new LoginView();
         stage.setScene(loginView.createScene(stage));
         stage.setTitle("GestionHandicap — Connexion");
-        stage.setResizable(false);
+        stage.setResizable(true);
+        stage.setMinWidth(700);
+        stage.setMinHeight(460);
+        stage.setMaximized(true);
         stage.centerOnScreen();
         stage.show();
     }

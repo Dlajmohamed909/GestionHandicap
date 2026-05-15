@@ -26,7 +26,11 @@ public class ReclamationDAO {
             stmt.setString(1, r.getDescription());
             stmt.setString(2, r.getStatut());
             stmt.setInt(3, r.getIdPersonne());
-            stmt.setInt(4, r.getIdAdmin());
+            if (r.getIdAdmin() == 0) {
+                stmt.setNull(4, java.sql.Types.INTEGER);
+            } else {
+                stmt.setInt(4, r.getIdAdmin());
+            }
 
             stmt.executeUpdate();
 
@@ -92,6 +96,17 @@ public class ReclamationDAO {
             e.printStackTrace();
         }
         return liste;
+    }
+
+    public void modifierReclamation(int idReclamation, String description) {
+        String sql = "UPDATE reclamation SET description = ? WHERE id_reclamation = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, description);
+            stmt.setInt(2, idReclamation);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateStatut(int idReclamation, String statut) {

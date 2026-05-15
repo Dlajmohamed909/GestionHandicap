@@ -1,4 +1,4 @@
-module com.example.gestionhandicap {
+module com.gestionhandicap {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
